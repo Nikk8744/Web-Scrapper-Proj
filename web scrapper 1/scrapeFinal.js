@@ -103,8 +103,8 @@ cron.schedule('* * * * * ', () => {
     const fileName = "book_data";
     const pages = 2;
     const date = new Date();
-    console.log(`Scheduling started ${date.getDay()}-   ${date.getHours()}grs|${date.getMinutes()}min`);
-    // console.log(`Scheduling started`, new Date());
+    // console.log(`Scheduling started ${date.getDay()}-   ${date.getHours()}grs|${date.getMinutes()}min`);
+    console.log(`Scheduling started`, date);
     scrapeBooks(pages, fileName);
 
 })
