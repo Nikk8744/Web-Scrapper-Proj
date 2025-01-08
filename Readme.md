@@ -24,6 +24,7 @@ The script will generate a CSV file (books_final.csv) containing:
 - Cheerio
 - Axios
 - CSV Writer
+- Node-Cron
 #### Steps to Run the Script
 1. Clone the repository using the provided URL.
 2. Navigate to the cloned repository directory.
@@ -39,6 +40,7 @@ The script will generate a CSV file (books_final.csv) containing the scraped boo
 - Cheerio
 - Axios
 - CSV Writer
+- Node-Cron
 
 
 **->  Yet to be implemented**

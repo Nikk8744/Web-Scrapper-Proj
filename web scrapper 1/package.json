@@ -13,6 +13,7 @@
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",
     "json2csv": "^6.0.0-alpha.2",
+    "node-cron": "^3.0.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
   }

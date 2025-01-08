@@ -7,6 +7,7 @@ extract data from a specific website, in this case, a website that displays a li
 - `axios` for making HTTP requests
 - `cheerio` for parsing HTML content
 - `node.js` for running the scrapper
+- `node-cron` for scheduling the scrapper to run at regular intervals
 #### Code
 ```javascript
 

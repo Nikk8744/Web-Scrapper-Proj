@@ -2,14 +2,15 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const json2csv = require("json2csv").Parser;
+const cron = require('node-cron');
 
 let booksData = []; 
 
 
-const scrapeBooks = async () => {
+const scrapeBooks = async (pages, fileName) => {
     let pageNumber = 1;
 
-    while (pageNumber<=1) {
+    while (pageNumber<=pages) {
         try {
             const pageUrl = `https://books.toscrape.com/catalogue/page-${pageNumber}.html`; 
             const { data } = await axios.get(pageUrl); 
@@ -52,7 +53,7 @@ const scrapeBooks = async () => {
     // Convrt books data to CSV and save to a file
     const j2cp = new json2csv();
     const csv = j2cp.parse(booksData);
-    fs.writeFileSync('./CsvFiles/books_final.csv', csv, 'utf-8'); 
+    fs.writeFileSync(`./CsvFiles/${fileName}.csv`, csv, 'utf-8'); 
     console.log("Data saved to books_final.csv");
 };
 
@@ -86,7 +87,7 @@ const getDesc1 = async(bookUrl) =>  {
     try {
         const fullURL = `https://books.toscrape.com/catalogue/${bookUrl}`
         // console.log(fullURL)
-        const { data } = await axios.get(fullURL);
+        const { data} = await axios.get(fullURL);
         let $ = cheerio.load(data);
         const desc = $('article[class="product_page"] > p').text().trim();
         // console.log(`The description for ${bookUrl} :`, desc)
@@ -97,4 +98,13 @@ const getDesc1 = async(bookUrl) =>  {
     }
 }
 
-scrapeBooks();
+cron.schedule('* * * * * ', () => {
+
+    const fileName = "book_data";
+    const pages = 2;
+    const date = new Date();
+    console.log(`Scheduling started ${date.getDay()}-   ${date.getHours()}grs|${date.getMinutes()}min`);
+    // console.log(`Scheduling started`, new Date());
+    scrapeBooks(pages, fileName);
+
+})
