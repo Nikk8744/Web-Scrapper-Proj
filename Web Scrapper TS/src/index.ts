@@ -22,23 +22,28 @@ const scrapeBooks = async (pages: number, fileName: string): Promise<void> => {
             const { data } = await axios.get(url);
             let $ = cheerio.load(data);
             // console.log(data)
-            const bookList = $('article.product_pod');
+            const bookList = $('article.product_pod'); // get all book elements
     
             if(bookList.length === 0){
                 console.log(`No books found on page ${pageNumber}`);
                 break;
             }
-    
+            
+            // loop through each book element and extract the title, price and description
             for(const element of bookList.toArray()){
                 // const bookName = $(element).find('h3 > a').text();
                 const bookName = $(element).find('h3 > a').attr('title');
                 const bookPrice = $(element).find('p.price_color').text().trim();
     
                 const bookUrl = $(element).find('h3 > a').attr('href');
-                const bookDescription = await getDesc(bookUrl)
+
+                const bookDescription = await getDesc(bookUrl) // get book description from url
                 // console.log(bookUrl)
+
+                // to push the data in the array
                 booksData.push({name: bookName, price: bookPrice, desc: bookDescription});          
             }
+            
             console.log(`Page ${pageNumber} scraped successfullyyyy`);
             pageNumber++;
         } catch (error) {
@@ -47,9 +52,9 @@ const scrapeBooks = async (pages: number, fileName: string): Promise<void> => {
         }
     }
 
-    const j2c = new json2csv();
-    const csv = j2c.parse(booksData);
-    fs.writeFileSync(`./src/CsvFiles/${fileName}.csv`, csv, 'utf-8');
+    const j2c = new json2csv(); // create a new json2csv object
+    const csv = j2c.parse(booksData); // parse the data to csv format
+    fs.writeFileSync(`./src/CsvFiles/${fileName}.csv`, csv, 'utf-8'); // write the csv data to a file
     console.log("Data saved to csv file:", fileName,".csv");
 }
 
@@ -69,6 +74,7 @@ const getDesc = async (bookUrl: String): Promise<string> => {
    }
 };
 
+// call the function in cron schedular
 cron.schedule('* * * * *', () => {
     const pages = 2;
     const fileName = 'books';
@@ -76,4 +82,4 @@ cron.schedule('* * * * *', () => {
 
     console.log("Scheduling started at", d.toISOString());
     scrapeBooks(pages, fileName );
-});
+})
