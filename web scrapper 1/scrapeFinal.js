@@ -55,7 +55,7 @@ const scrapeBooks = async (pages, fileName) => {
     const csv = j2cp.parse(booksData);
     fs.writeFileSync(`./CsvFiles/${fileName}.csv`, csv, 'utf-8'); 
     console.log("Data saved to books_final.csv");
-};
+}; 
 
 
 // const getDesc = async(bookSlug) =>  {
